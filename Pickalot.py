@@ -20,7 +20,7 @@ password_lyst = []
 Alpha = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 Beta = list("abcdefghijklmnopqrstuvwxys")
 special_char = list("!@#$%^&*")
-digits = list("12345678")
+digits = list("123456789")
 print(Alpha)
 username = "John"
 password = "John@01"
