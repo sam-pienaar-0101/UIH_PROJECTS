@@ -1,12 +1,14 @@
 import time
 
 products = ["Apples", "Bananas"]
+cart = []
 Places_1 = ["Salvador", "Khandisa", "KwaDlangezwa"]
 Places_2 = ["Empangeni"]
 current_time = time.localtime().tm_hour
 day = ""
 item = ""
 days = 0
+number = 0
 no_of_apples = 0
 no_of_bananas = 0
 price_apple = 3
@@ -21,11 +23,13 @@ Alpha = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 Beta = list("abcdefghijklmnopqrstuvwxys")
 special_char = list("!@#$%^&*")
 digits = list("123456789")
-print(Alpha)
-username = "John"
-password = "John@01"
 
-#########CREATE USER ACCOUNT ###########################
+username = "Johnson"
+password = "John@011"
+defined_username = []
+defined_password = []
+
+#############################        CREATE USER ACCOUNT       ##################################################
 """
 User Account:
 1. Username:
@@ -38,11 +42,12 @@ User Account:
     2.5 Must have at least one upper case and one lower case characters
 """
 
-print(" "*57, "PICKALOT")
+print(" "*57, "PICKALOT.COM")
 print(" "*40,"Welcome to Pickalot, where you find and pick all you need!")
 
 def check_account_exist():
     global day
+
     account_check = input(f" {" "*20}Do you have an existing Account?\n Either enter 'Yes or No':")
     if account_check.upper() == "YES":
             open_account()
@@ -56,154 +61,139 @@ def check_account_exist():
 def create_account():
     global day
     consent_check = input(f"Do you wish to open one?\n Either enter 'Yes or No':")
+
     if consent_check.upper() == "YES":
         create_username()
     elif consent_check.upper() == "NO":
+        time_of_day()
         print(f" {" " * 40}Thank you and gave a good {day}")
         exit()
+    while consent_check.upper() != "YES" or consent_check.upper() != "NO":
+        print(f" {" "*20}Invalid characters. Please try again!")
+        print(create_account())
+        break
 
 def create_username():
     global username_lyst, username
     print(f" {1}. Username must begin with Capital letter! \n {2}. Must have minimum 6 characters")
     username = input("Create username: ")
+
     username_lyst.append(username)
     username_lyst = list(username)
-    print(username_lyst)
-    if username_lyst[0].upper() in Alpha and len(username_lyst) >= 6 and username_lyst == list(username):
+
+    if any(x in username_lyst for x in Alpha) and username_lyst == list(username) and len(username_lyst) >= 6:
         print(f"Hi {username.upper()}, lets create password ")
         create_password()
-    elif username_lyst[0].upper() not in Alpha and len(username) >= 6 and username_lyst == list(username):
-        print(f"Error!\nUsername must begin with Capital letter!")
+    elif any(x  not in username_lyst for x in Alpha) and len(username) >= 6 and username_lyst == list(username):
+        print(f"Username does not have a capital letter!\nTry again.")
         create_username()
-    elif username_lyst[0].upper() in Alpha and len(username) < 6 and username_lyst == list(username):
-        print(f"Error!\nMust have minimum 6 characters")
+    elif any(x in username_lyst for x in Alpha) and len(username) < 6 and username_lyst == list(username):
+        print(f"Username has {len(username)} chacacters and must have a minimum of 6 characters\nTry again.")
         create_username()
-    elif username_lyst[0].upper() not in Alpha and len(username) < 6 and username_lyst == list(username):
-        print(f" Username must begin with Capital letter!\nMust have minimum 6 characters")
+    elif any(x not in username_lyst for x in Alpha) and len(username) < 6 and username_lyst == list(username):
+        print(f"Username has no Capital letter!\nUsername has {len(username)} chacacters and must have minimum 6 characters\nTry again.")
+        create_username()
     else:
-        print("Error")
+        print("Error input")
         create_username()
 
 def create_password():
     global password, password_lyst
-    print(f"{1}. Must have minimum 6 characters\n{2}. Must have one special character(!@#$%^&*)\n{3}.Must have one digit(1234567890)\n{4}. Must have one upper case letter\n{5}. Must have one lower case letter.")
+    print(f"{1}. Must have minimum 8 characters\n{2}. Must have one special character(!@#$%^&*)\n{3}.Must have one digit(1234567890)\n{4}. Must have one upper case letter\n{5}. Must have one lower case letter.")
     password = input(f"Create password: ")
+
     password_lyst.append(password)
     password_lyst = list(password)
-    print(password_lyst)
-    if len(password) >= 6 and password_lyst in special_char and password_lyst in digits and password_lyst in Beta and password_lyst in Alpha and password_lyst == list(password):
-        print(f"Password successfully created!")
-        open_account()
-    elif len(password) < 6 and password_lyst in special_char and password_lyst in digits and password_lyst in Beta and password_lyst in Alpha and password_lyst == list(password):
-        print("Password length is short. Please try again!")
-        create_password()
-    elif len(password) >= 6 and password_lyst not in special_char and password_lyst in digits and password_lyst in Beta and password_lyst in Alpha and password_lyst == list(password):
-        print("No special character. Please try again")
-        create_password()
-    elif len(password) >= 6 and password_lyst in special_char and password_lyst not in digits and password_lyst in Beta and password_lyst in Alpha and password_lyst == list(password):
-        print("No digit in password. Please try again!")
-        create_password()
-    elif len(password) >= 6 and password_lyst in special_char and password_lyst in digits and password_lyst not in Beta and password_lyst in Alpha and password_lyst == list(password):
-        print("No lower case character. Please try again!")
-        create_password()
-    elif len(password) >= 6 and password_lyst in special_char and password_lyst in digits and password_lyst in Beta and password_lyst not in Alpha and password_lyst == list(password):
-        print("No Upper cace character. Please try again!")
-        create_password()
-
+    while True:
+            if any(n in password_lyst for n in Alpha) and any(a in password_lyst for a in special_char) and any(b in password_lyst for b in digits) and any(c in password_lyst for c in Beta ) and len(password) >= 8:
+                print(f"{" "*20}Password created successfully!\n{" "*20}Sign in")
+                open_account()
+            elif any(a in password_lyst for a in special_char) and any(b in password_lyst for b in digits) and any(c in password_lyst for c in Beta) and any(n  not in password_lyst for n  in Alpha) and len(password) >= 8:
+                print(f"{" "*20}Password has no Upper case character. Please try again!")
+                print(" ")
+                create_password()
+            elif any(a not in password_lyst for a in special_char) and any(b in password_lyst for b in digits) and any(c in password_lyst for c in Beta) and any(n  in password_lyst for n  in Alpha) and len(password) >= 8:
+                print(f"{" "*20}Password has no Special character. Please try again!")
+                print(f" ")
+                create_password()
+            elif any(a in password_lyst for a in special_char) and any(b not in password_lyst for b in digits) and any(c in password_lyst for c in Beta) and any(n in password_lyst for n  in Alpha) and len(password) >= 8:
+                print(f"{" "*20}Password has no digit character. Please try again!")
+                print(f" ")
+                create_password()
+            elif any(a in password_lyst for a in special_char) and any(b in password_lyst for b in digits) and any(c not in password_lyst for c in Beta) and any(n in password_lyst for n  in Alpha) and len(password) >= 8:
+                print(f"{" "*20}Password has no lower case character. Please try again!")
+                print(f" ")
+                create_password()
+            elif any(a in password_lyst for a in special_char) and any(b in password_lyst for b in digits) and any(c not in password_lyst for c in Beta) and any(n in password_lyst for n  in Alpha) and len(password) < 8:
+                print(f"Password lenghth is less tha 8. Please try again!")
+                print(f" ")
+                create_password()
+            elif any(a not in password_lyst for a in special_char) or any(b not in password_lyst for b in digits) or any(c not in password_lyst for c in Beta) or any(n in password_lyst for n  in Alpha) or len(password) < 8:
+                print("Password has missing characters or length of password below 8!")
+                create_password()
+            break
 def open_account():
+    global defined_username, defined_password, password_lyst, username_lyst, item , products, cart
+
+    print(" " * 50, "PICKALOT.COM")
+
     open_username = input(f"Provide username: ")
     open_password = input(f"Enter Password: ")
-#############END USER ACCOUNT ################################
+
+    defined_username.append(open_username)
+    defined_password.append(open_password)
+
+    open_username_lyst = list(open_username)
+    open_password_lyst = list(open_password)
+
+    if ((open_username_lyst == username_lyst) and (open_password_lyst == password_lyst)) or ((open_username == username) and (open_password == password)):
+        search_engine()
+    elif ((open_username_lyst != username_lyst) and (open_password_lyst == password_lyst)) or ((open_username != username) and (open_password == password)):
+        print("Incorrect Username!")
+        open_account()
+    elif ((open_username_lyst == username_lyst) and (open_password_lyst != password_lyst)) or ((open_username == username) and (open_password != password)):
+        print("Incorrect Password:")
+        open_account()
+    while ((open_username_lyst != username_lyst) and (open_password_lyst != password_lyst)) or ((open_username != username) and (open_password != password)):
+        print("Invalid input!")
+        open_account()
 
 
+##################################       END USER ACCOUNT FUNCTIONS  ###################################################
 
-##################### Iteration function #######################
-def restart_error():
-    global item
-    again_item = input("Try again:")
-    item = again_item
-    if item == "Apples":
-        print(apples())
-    elif item == "Bananas":
-        print(bananas())
+##################################   SEARCH ENGINE     #################################################################
+def search_engine():
+     global item, Alpha, Beta, products, number
+     print(" " * 50, "PICKALOT.COM")
+     item = input(f"Search any item: ")
+     search_lyst = list(item)
+     search_products1 = list(products[0])
+     search_products2 = list(products[1])
+     if any(i in search_lyst for i in search_products1 ) and any(j in search_lyst for j in search_products2):
+         print(f"{" " * 10}Search results:\n1. {products[0]}\n2. {products[1]}")
+         number = int(input("Enter choice:"))
+         while True:
+             if number == 1:
+                 apples()
+                 exit()
+             elif number == 2:
+                 bananas()
+                 exit()
+     elif any(i in search_lyst for i in search_products1 ):
+         print(f"{" "*10}Search results:\n1. {products[0]}")
+         apples()
+     elif any(j in search_lyst for j in search_products2):
+         print(f"{" " * 10}Search results:\n1. {products[1]}")
+         bananas()
+     elif any(i not in search_lyst for i in search_products1 ) and any(j not in search_lyst for j in search_products2) :
+         print(f"{" "*10}Search results: No result")
+         search_engine()
 
-def add_to_cart():
-    global no_of_apples, no_of_bananas
-    global tot_amount_apples, tot_amount_bananas
-    global address
-    global days
-    global current_time
-    global day
 
-    another_item = input("Search again:")
+ ##################################   END OF SEARCH ENGINE    #########################################################
 
-    if another_item == "Apples":
-        print("Price of 1 apple is R3")
-        add_no_of_apples = int(input("How many apples?"))
-        no_of_apples += add_no_of_apples
 
-        tot_amount_apples = int(no_of_apples * price_apple * universal_tariff)
-
-    elif another_item == "Bananas":
-        print("Price of 1 banana is R2")
-        add_no_of_bananas = int(input("How many bananas?"))
-        no_of_bananas += add_no_of_bananas
-
-        tot_amount_bananas = int(no_of_bananas * price_banana * universal_tariff)
-
-    print("Current total is ZAR", tot_amount_apples + tot_amount_bananas)
-
-    check_procedure = input("Do you still wish to add more products (Yes / No)?")
-
-    if check_procedure == "Yes":
-        return add_to_cart()
-
-    if check_procedure == "No":
-        address = input("Please write street name to address for delivery:")
-        print(delivery_time())
-        print(time_of_day())
-        print("Great! Your checkout price is ZAR",
-              tot_amount_apples + tot_amount_bananas,
-              "\nVisit banking app to confirm EFT!\nProduct shall be delivered at",
-              address, "in", days,"days\nThanks and have a good"+ day +"!")
-    exit()
-
-print(check_account_exist())
-###################### END #####################################
-
-############# FUNCTIONS FOR PRODUCTS ############################
-def apples():
-    global no_of_apples,\
-        tot_amount_apples,\
-        address, \
-        days, \
-        day,\
-        current_time, \
-        item
-    print(" " * 57, "PICKALOT")
-    print("Price of 1 apple is R3")
-    item = input("Search :")
-    if item == products[0]:
-        no_of_apples = int(input("How many apples?"))
-        tot_amount_apples = int(no_of_apples * price_apple * universal_tariff)
-
-        print("Price for", no_of_apples, "apples is ZAR", tot_amount_apples)
-
-        check_procedure_apple = input("Do you wish to add more products (Yes / No)?")
-
-        if check_procedure_apple == "Yes":
-            return add_to_cart()
-
-        if check_procedure_apple == "No":
-            address = input("Please write street name to address for delivery:")
-            print(delivery_time())
-            print(time_of_day())
-            print("Great! Your checkout price is ZAR",
-                  tot_amount_apples + tot_amount_bananas,
-                  "\nVisit banking app to confirm EFT!\nProduct shall be delivered at",
-                  address, "in", days," days\nThanks and have a good"+ day +"!")
-    exit()
-
+#########################################    ITERATION FUNCTIONS ####################################################
 def delivery_time():
     global days
     if address in Places_1:
@@ -220,6 +210,94 @@ def time_of_day():
     else:
         day = "night"
 
+
+def add_to_cart():
+    global no_of_apples, no_of_bananas
+    global tot_amount_apples, tot_amount_bananas
+    global address
+    global days
+    global current_time
+    global day
+    print(" " * 57, "PICKALOT.COM")
+    another_item = input("Search again:")
+    try:
+        if another_item == "Apples":
+            print("Price of 1 apple is R3")
+            add_no_of_apples = int(input("How many apples?"))
+            no_of_apples += add_no_of_apples
+            tot_amount_apples = int(no_of_apples * price_apple * universal_tariff)
+        elif another_item == "Bananas":
+            print("Price of 1 banana is R2")
+            add_no_of_bananas = int(input("How many bananas?"))
+            no_of_bananas += add_no_of_bananas
+            tot_amount_bananas = int(no_of_bananas * price_banana * universal_tariff)
+        elif any(i not in another_item for i in products):
+            print("Product not found! Please re-enter item")
+            add_to_cart()
+    except:
+        print("Invalid input. Please try again!")
+        add_to_cart()
+
+    print("Current total is ZAR", tot_amount_apples + tot_amount_bananas)
+    check_procedure = input("Do you still wish to add more products (Yes / No)?")
+    if check_procedure == "Yes":
+     add_to_cart()
+    elif check_procedure.upper() == "NO":
+        address = input("Please write street name to address for delivery:")
+        delivery_time()
+        time_of_day()
+        if (address in Places_1) or (address in Places_2):
+            print("Great! Your checkout price is ZAR",tot_amount_apples + tot_amount_bananas,"\nVisit banking app to confirm EFT!\nProduct shall be delivered at",address, "in", days," days\nThanks and have a good"+ day +"!")
+            exit()
+        elif (address not in Places_1) or (address not in Places_2):
+            print("Unknown address. Please restart order of item!")
+            add_to_cart()
+    while check_procedure.upper() != "YES" or check_procedure.upper() != "NO":
+        print(f" {" "*20}Invalid input. Please try again!")
+        add_to_cart()
+        break
+    exit()
+
+
+#####################################      END  OF ITERATION FUNCTIONS   ###############################################
+
+################################        FUNCTIONS FOR PRODUCTS       ###################################################
+def apples():
+    global no_of_apples,\
+        tot_amount_apples,\
+        address, \
+        days, \
+        day,\
+        current_time, \
+        item, cart
+    print(" " * 57, "PICKALOT.COM")
+    print("Price of 1 apple is R3")
+    try:
+        no_of_apples = int(input("How many apples?"))
+        tot_amount_apples = int(no_of_apples * price_apple * universal_tariff)
+        print("Price for", no_of_apples, "apples is ZAR", tot_amount_apples)
+    except:
+        print("Invalid input. Try again")
+        apples()
+
+    check_procedure_apple = input("Do you wish to add more products (Yes / No)?")
+    if check_procedure_apple.upper() == "YES":
+        print(add_to_cart())
+    elif check_procedure_apple.upper() == "NO":
+        address = input("Please write street name to address for delivery:")
+        delivery_time()
+        time_of_day()
+        if (address in Places_1) or (address in Places_2):
+            print("Great! Your checkout price is ZAR",tot_amount_apples + tot_amount_bananas,"\nVisit banking app to confirm EFT!\nProduct shall be delivered at",address, "in", days," days\nThanks and have a good"+ day +"!")
+            exit()
+        elif (address not in Places_1) or (address not in Places_2):
+            print("Unknown address. Please retart order of item!")
+            apples()
+    while check_procedure_apple.upper() != "YES" or check_procedure_apple.upper() != "NO":
+        print(f" {" "*20}Invalid input. Please try again!")
+        print(apples())
+        break
+
 def bananas():
     global no_of_bananas
     global  tot_amount_bananas
@@ -229,39 +307,41 @@ def bananas():
     global day
     global item
 
-    print(" " * 57, "PICKALOT")
+    print(" " * 57, "PICKALOT.COM")
     print("Price of 1 banana is R2")
-    item = input("Search :")
-    if item == products[1]:
+    try:
         no_of_bananas = int(input("How many bananas?"))
         tot_amount_bananas = int(no_of_bananas * price_banana * universal_tariff)
-
         print("Price for", no_of_bananas, "bananas is ZAR", tot_amount_bananas)
+    except:
+        print("Invalid input.Please try again!")
+        bananas()
 
-        check_procedure_banana = input("Do you wish to add more products (Yes / No)?")
-
-        if check_procedure_banana == "Yes":
-            return add_to_cart()
-
-        if check_procedure_banana == "No":
-            address = input("Please write street name to address for delivery:")
-            print(delivery_time())
-            print(time_of_day())
-            print("Great! Your checkout price is ZAR",
-                  tot_amount_apples + tot_amount_bananas,
-                  "\nVisit banking app to confirm EFT!\nProduct shall be delivered at",
-                  address, "in", days ,"days\nThanks and have a good"+ day +"!")
-    exit()
-
-#################### MAIN LOOP ##################################
-while item in products:
-    if item == "Apples":
-        print(apples())
-
-    elif item == "Bananas":
+    check_procedure_banana = input("Do you wish to add more products (Yes / No)?")
+    if check_procedure_banana == "Yes":
+        add_to_cart()
+    elif check_procedure_banana.upper() == "NO":
+        address = input("Please write street name to address for delivery:")
+        delivery_time()
+        time_of_day()
+        if (address in Places_1) or (address in Places_2):
+            print("Great! Your checkout price is ZAR",tot_amount_apples + tot_amount_bananas,"\nVisit banking app to confirm EFT!\nProduct shall be delivered at",address, "in", days," days\nThanks and have a good"+ day +"!")
+            exit()
+        elif (address not in Places_1) or (address not in Places_2):
+            print("Unknown address. Please restart order of item!")
+            bananas()
+    while check_procedure_banana.upper() != "YES" or check_procedure_banana.upper() != "NO":
+        print(f" {" "*20}Invalid input. Please try again!")
         print(bananas())
-    else:
-        print("Invalid Input")
-        print(restart_error())
+        break
+
+#############################    END OF PRODUCT DUNCTIONS  #############################################################
 
 
+################################  LOOP FOR DETERMINING ACCESS TO PRODUCTS #############################################
+
+
+
+##########################################     END OF LOOP            #################################################
+
+check_account_exist() # To start program
